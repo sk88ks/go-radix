@@ -66,6 +66,38 @@ func TestRadix(t *testing.T) {
 	}
 }
 
+func TestMaximuxKeys(t *testing.T) {
+	r := New()
+
+	keys := []string{
+		"",
+		"foo",
+		"foobar",
+		"foobarbaz",
+		"foobarbazzip",
+		"foozip",
+	}
+	for _, k := range keys {
+		r.Insert(k, nil)
+	}
+
+	res := r.MaximumKeys()
+	expected := map[string]bool{
+		"foobarbazzip": true,
+		"foozip":       true,
+	}
+
+	if len(res) != len(expected) {
+		t.Fatalf("bad length: %v", len(res))
+	}
+
+	for i := range res {
+		if !expected[res[i]] {
+			t.Fatalf("Not found ends")
+		}
+	}
+}
+
 func TestRoot(t *testing.T) {
 	r := New()
 	_, ok := r.Delete("")

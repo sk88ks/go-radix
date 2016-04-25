@@ -1,6 +1,7 @@
 package radix
 
 import (
+	"fmt"
 	"sort"
 	"strings"
 )
@@ -396,6 +397,30 @@ func (t *Tree) Maximum() (string, interface{}, bool) {
 		break
 	}
 	return "", nil, false
+}
+
+// MaximumKeys retrieves maximum keys in tree
+func (t *Tree) MaximumKeys() []string {
+	var keys []string
+	n := t.root
+	seekEnds(n, func(key string, val interface{}) {
+		keys = append(keys, key)
+	})
+	return keys
+}
+
+func seekEnds(n *node, fn func(string, interface{})) {
+	// Visit the leaf values if any
+	if n.leaf != nil && len(n.edges) == 0 {
+		fmt.Println(n.leaf.key)
+		fn(n.leaf.key, n.leaf.val)
+		return
+	}
+
+	// Recurse on the children
+	for _, e := range n.edges {
+		seekEnds(e.node, fn)
+	}
 }
 
 // Walk is used to walk the tree
