@@ -1,7 +1,6 @@
 package radix
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 )
@@ -410,14 +409,11 @@ func (t *Tree) MaximumKeys() []string {
 }
 
 func seekEnds(n *node, fn func(string, interface{})) {
-	// Visit the leaf values if any
 	if n.leaf != nil && len(n.edges) == 0 {
-		fmt.Println(n.leaf.key)
 		fn(n.leaf.key, n.leaf.val)
 		return
 	}
 
-	// Recurse on the children
 	for _, e := range n.edges {
 		seekEnds(e.node, fn)
 	}
